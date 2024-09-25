@@ -1,0 +1,173 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Login - 8Fantastic</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="starfield"></div>
+    <div class="container">
+        <div class="panel">
+            <h1 style="color: white;">Welcome to 8Fantastic</h1>
+            <form id="loginForm">
+                <input type="text" id="username" placeholder="Username" required>
+                <input type="password" id="password" placeholder="Password" required>
+                <button type="submit">Login</button>
+            </form>
+            <p style="color: white;">Belum punya akun? <a href="#" id="showRegister">Daftar di sini</a></p>
+        </div>
+    </div>
+    <footer>
+        Kelas Web 8F - Membangun Masa Depan
+    </footer>
+    
+    <script>
+        function createStar() {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 3 + 1; // Random size between 1 and 4
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.top = `${Math.random() * window.innerHeight}px`;
+            star.style.left = `${Math.random() * window.innerWidth}px`;
+            document.getElementById('starfield').appendChild(star);
+        }
+
+        for (let i = 0; i < 100; i++) {
+            createStar();
+        }
+
+        document.getElementById('loginForm').addEventListener('submit', function(event) {
+            event.preventDefault();
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+
+            const storedUser = localStorage.getItem(username);
+            if (storedUser && storedUser === password) {
+                const video = document.createElement('video');
+                video.src = "accessgranted.mp4";
+                video.autoplay = true;
+                video.style.position = 'fixed';
+                video.style.top = '0';
+                video.style.left = '0';
+                video.style.width = '100%';
+                video.style.height = '100%';
+                video.style.objectFit = 'cover';
+                video.style.zIndex = '20';
+                video.controls = false;
+                video.muted = false;
+                document.body.appendChild(video);
+                
+                video.onended = function() {
+                    window.location.href = "chatglobal.html"; 
+                };
+            } else {
+                alert("Invalid username or password.");
+            }
+        });
+
+        document.getElementById('showRegister').addEventListener('click', function() {
+            const panel = document.querySelector('.panel');
+            panel.innerHTML = `
+                <h1 style="color: white;">Daftar Akun</h1>
+                <form id="registerForm">
+                    <input type="text" id="regUsername" placeholder="Username" required>
+                    <input type="password" id="regPassword" placeholder="Password" required>
+                    <button type="submit">Daftar</button>
+                </form>
+                <p style="color: white;">Sudah punya akun? <a href="#" id="showLogin">Login di sini</a></p>
+            `;
+            attachRegisterFormHandler();
+        });
+
+        function attachRegisterFormHandler() {
+            document.getElementById('registerForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const regUsername = document.getElementById('regUsername').value;
+                const regPassword = document.getElementById('regPassword').value;
+
+                localStorage.setItem(regUsername, regPassword);
+                alert("Akun berhasil dibuat! Silakan login.");
+                
+                const panel = document.querySelector('.panel');
+                panel.innerHTML = `
+                    <h1 style="color: white;">Welcome to 8Fantastic</h1>
+                    <form id="loginForm">
+                        <input type="text" id="username" placeholder="Username" required>
+                        <input type="password" id="password" placeholder="Password" required>
+                        <button type="submit">Login</button>
+                    </form>
+                    <p style="color: white;">Belum punya akun? <a href="#" id="showRegister">Daftar di sini</a></p>
+                `;
+                attachLoginFormHandler();
+            });
+        }
+
+        function attachLoginFormHandler() {
+            document.getElementById('loginForm').addEventListener('submit', function(event) {
+                event.preventDefault();
+                const username = document.getElementById('username').value;
+                const password = document.getElementById('password').value;
+
+                const storedUser = localStorage.getItem(username);
+                if (storedUser && storedUser === password) {
+                    const video = document.createElement('video');
+                    video.src = "accessgranted.mp4";
+                    video.autoplay = true;
+                    video.style.position = 'fixed';
+                    video.style.top = '0';
+                    video.style.left = '0';
+                    video.style.width = '100%';
+                    video.style.height = '100%';
+                    video.style.objectFit = 'cover';
+                    video.style.zIndex = '20';
+                    video.controls = false;
+                    video.muted = false;
+                    document.body.appendChild(video);
+                    
+                    video.onended = function() {
+                        window.location.href = "chatglobal.html"; 
+                    };
+                } else {
+                    alert("Invalid username or password.");
+                }
+            });
+        }
+
+        attachLoginFormHandler(); // Attach login form handler on load
+    </script>
+</body>
+</html>Id('username').value;
+                const password = document.getElementById('password').value;
+
+                // Check local storage for user credentials
+                const storedUser = localStorage.getItem(username);
+                if (storedUser && storedUser === password) {
+                    // Redirect after a short delay to show the video
+                    const video = document.createElement('video');
+                    video.src = "accessgranted.mp4";
+                    video.autoplay = true;
+                    video.style.position = 'fixed';
+                    video.style.top = '0';
+                    video.style.left = '0';
+                    video.style.width = '100%';
+                    video.style.height = '100%';
+                    video.style.objectFit = 'cover';
+                    video.style.zIndex = '20';
+                    video.controls = false;
+                    video.muted = true; // Mute to autoplay
+                    document.body.appendChild(video);
+                    
+                    video.onended = function() {
+                        window.location.href = "chatglobal.html"; // Redirect to chat after video ends
+                    };
+                } else {
+                    alert("Invalid username or password.");
+                }
+            });
+        }
+    </script>
+</body>
+</html>

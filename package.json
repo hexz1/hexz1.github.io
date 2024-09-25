@@ -1,0 +1,13 @@
+{
+  "name": "space-chat-app",
+  "version": "1.0.0",
+  "description": "A chat application with space theme",
+  "main": "app.js",
+  "scripts": {
+    "start": "node app.js"
+  },
+  "dependencies": {
+    "express": "^4.17.3",
+    "socket.io": "^4.5.3"
+  }
+}

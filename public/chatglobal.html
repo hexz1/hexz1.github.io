@@ -1,0 +1,102 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chat Global - 8Fantastic</title>
+    <link rel="stylesheet" href="css/style.css">
+</head>
+<body>
+    <div id="starfield"></div>
+    <div class="container">
+        <div class="chat-panel">
+            <div id="messages"></div>
+            <input type="text" id="messageInput" placeholder="Ketik pesan di sini..." required>
+            <input type="file" id="imageInput" accept="image/*">
+            <button id="sendButton">Kirim</button>
+            <button id="logoutButton">Logout</button>
+        </div>
+    </div>
+    <footer>
+        Kelas Web 8F - Membangun Masa Depan
+    </footer>
+    
+    <script>
+        const username = localStorage.getItem('username');
+
+        // Mengirim pesan
+        document.getElementById('sendButton').addEventListener('click', async () => {
+            const messageInput = document.getElementById('messageInput').value;
+            const timestamp = new Date().toLocaleString();
+            const message = {
+                username: username,
+                message: messageInput,
+                timestamp: timestamp
+            };
+
+            // Kirim pesan ke server
+            await fetch('/send-message', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(message)
+            });
+
+            document.getElementById('messageInput').value = ''; // Kosongkan input setelah kirim
+            loadMessages(); // Muat ulang pesan
+        });
+
+        // Muat pesan dari server
+        async function loadMessages() {
+            const response = await fetch('/get-messages');
+            const messages = await response.json();
+            const messagesContainer = document.getElementById('messages');
+            messagesContainer.innerHTML = '';
+
+            messages.forEach(msg => {
+                const msgElement = document.createElement('div');
+                msgElement.innerHTML = `<strong>${msg.username}</strong> [${msg.timestamp}]: ${msg.message}`;
+                messagesContainer.appendChild(msgElement);
+            });
+        }
+
+        setInterval(loadMessages, 1000); // Perbarui pesan setiap detik
+
+        // Fungsi untuk mengirim gambar
+        document.getElementById('imageInput').addEventListener('change', async (event) => {
+            const file = event.target.files[0];
+            const formData = new FormData();
+            formData.append('image', file);
+
+            // Kirim gambar ke server
+            await fetch('/send-image', {
+                method: 'POST',
+                body: formData
+            });
+
+            loadMessages(); // Muat ulang pesan setelah mengirim
+        });
+
+        // Logout
+        document.getElementById('logoutButton').addEventListener('click', () => {
+            localStorage.removeItem('username');
+            window.location.href = '/'; // Kembali ke halaman login
+        });
+
+        // Efek bintang
+        function createStar() {
+            const star = document.createElement('div');
+            star.className = 'star';
+            const size = Math.random() * 3 + 1; // Ukuran acak antara 1 dan 4
+            star.style.width = `${size}px`;
+            star.style.height = `${size}px`;
+            star.style.top = `${Math.random() * window.innerHeight}px`;
+            star.style.left = `${Math.random() * window.innerWidth}px`;
+            document.getElementById('starfield').appendChild(star);
+        }
+
+        for (let i = 0; i < 100; i++) {
+            createStar();
+        }
+    </script>
+</body>
+</html>
